@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raven.gallery.data.sql.dao.pictorial.PictorialInfoDao">
+    <resultMap id="BaseResultMap" type="com.raven.gallery.data.sql.po.pictorial.PictorialInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pictorial_name" jdbcType="VARCHAR" property="pictorialName"/>
+        <result column="pictorial_author" jdbcType="VARCHAR" property="pictorialAuthor"/>
+        <result column="sensitive" jdbcType="INTEGER" property="sensitive"/>
+        <result column="pictorial_title" jdbcType="VARCHAR" property="pictorialTitle"/>
+        <result column="pictorial_front_cover" jdbcType="VARCHAR" property="pictorialFrontCover"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="update_date" jdbcType="VARCHAR" property="updateDate"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_date" jdbcType="VARCHAR" property="createDate"/>
+    </resultMap>
+</mapper>

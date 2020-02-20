@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raven.gallery.data.sql.dao.pictorial.PictorialPageFileDao">
+    <resultMap id="BaseResultMap" type="com.raven.gallery.data.sql.po.pictorial.PictorialPageFile">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pictorial_book_id" jdbcType="INTEGER" property="pictorialBookId"/>
+        <result column="page_file" jdbcType="VARCHAR" property="pageFile"/>
+        <result column="page_sequence" jdbcType="INTEGER" property="pageSequence"/>
+    </resultMap>
+</mapper>

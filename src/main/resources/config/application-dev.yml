@@ -1,0 +1,41 @@
+################################ 开发环境 ################################
+
+server:
+  port: 8080
+
+spring:
+  http:
+    converters:
+      preferred-json-mapper: gson
+  gson:
+    #    default-property-inclusion: non_null
+    # JSON中时间的格式化样式
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialize-nulls: false
+    pretty-printing: true
+  datasource:
+    # SQLite
+    driver-class-name: org.sqlite.JDBC
+    # 运行
+    url: jdbc:sqlite:src/main/resources/db/gallery_db
+    # 打包
+    #    url: jdbc:sqlite::resource:/db/gallery_db
+    hikari:
+      pool-name: Hikari-Pool
+  data:
+    mongodb:
+      # mongodb://username:passwrod@127.0.0.1:2701/库名
+      uri: mongodb://admin:admin@127.0.0.1:27017/admin
+
+# MyBatis配置
+mybatis:
+  # 设置映射类型(ResultMap)下所在的包名
+  type-aliases-package: com.cswc.cssfgl.ftp.upload.ftp.po.dto.*
+  # 设置映射文件所在的资源路径
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+
+
+# Log日志设置
+logging:
+  # 设置日志配置文件
+  config: classpath:log/log4j2.yml

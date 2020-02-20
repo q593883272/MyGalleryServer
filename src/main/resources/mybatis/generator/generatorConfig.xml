@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- 数据库驱动 -->
+    <classPathEntry location="../MyGalleryServer/libs/sqlite3.jar"/>
+    <!--<classPathEntry location="C:\Users\Administrator\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar"/>-->
+
+    <context id="Sqlite" targetRuntime="MyBatis3">
+
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+        <!-- 自定义插件 -->
+        <!--        <plugin type="com.raven.mybatis.plugin.spring.SpringDaoAnnotationPlugin"/>
+                <plugin type="com.raven.mybatis.plugin.pagination.MySQLPaginationPlugin"/>
+                <plugin type="com.raven.mybatis.plugin.entity.ResultColumnPlugin"/>-->
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="org.sqlite.JDBC"
+                        connectionURL="jdbc:sqlite:src/main/resources/db/gallery_db"
+        />
+
+        <!-- 生成Model类存放位置 -->
+        <javaModelGenerator targetPackage="com.raven.entity" targetProject="src/test/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="mybatis.mapper" targetProject="src/test/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO类存放位置 -->
+        <!-- type类型
+             ANNOTATEDMAPPER 接口+注解+SQLProvider的方式生成
+             XMLMAPPER 接口+XMLMapper的方式生成
+             MIXEDMAPPER 接口+注解+MLMapper的方式生成
+             SPRING -->
+        <javaClientGenerator targetPackage="com.raven.dao" targetProject="src/test/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 生成对应表及类名 -->
+
+
+        <table tableName="pictorial_info" domainObjectName="PictorialInfo" sqlProviderName="DzReimportCommandProvider">
+            <columnOverride column="sensitive" property="sensitive" javaType="java.lang.Boolean"/>
+            <columnOverride column="update_date" property="updateDate" javaType="java.util.Date"/>
+            <columnOverride column="create_date" property="createDate" javaType="java.util.Date"/>
+        </table>
+        <table tableName="pictorial_variable_info" domainObjectName="PictorialVariableInfo" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_page_file" domainObjectName="PictorialPageFile" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_book" domainObjectName="PictorialBook" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_info_sort" domainObjectName="PictorialInfoSort" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_info_tag" domainObjectName="PictorialInfoTag" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_sort" domainObjectName="PictorialSort" sqlProviderName="DzReimportCommandProvider">
+        </table>
+        <table tableName="pictorial_tag" domainObjectName="PictorialTag" sqlProviderName="DzReimportCommandProvider">
+        </table>
+
+
+    </context>
+
+</generatorConfiguration>

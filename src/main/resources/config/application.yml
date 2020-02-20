@@ -1,0 +1,7 @@
+################################ 环境切换 ################################
+
+spring:
+  profiles:
+    # dev、test、prod
+    active: dev
+    include: dev-config

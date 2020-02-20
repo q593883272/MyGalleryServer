@@ -1,0 +1,172 @@
+buildscript {
+    // 依赖版本
+    ext {
+        lombok_version = "1.18.8"
+        spring_boot_version = "2.1.7.RELEASE"
+        spring_dependency_management_version = '1.0.8.RELEASE'
+        mybatis_spring_version = "2.1.1"
+        mybatis_mapper_version = "3.5.2"
+        mybatis_mapper_spring_version = "2.1.5"
+        mybatis_generator_plugin_version = "2.1.2"
+        sqlite_version = "3.28.0"
+    }
+
+    repositories {
+        //本地默认仓库
+        mavenLocal()
+        //阿里仓库
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+
+    }
+    // 插件依赖
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath "io.spring.gradle:dependency-management-plugin:$spring_dependency_management_version"
+        classpath "gradle.plugin.com.thinkimi.gradle:mybatis-generator-plugin:$mybatis_generator_plugin_version"
+    }
+}
+
+apply plugin: "java"
+apply plugin: "war"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply plugin: "com.thinkimi.gradle.MybatisGenerator"
+
+group 'com.raven.gallery'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+//依赖仓库配置
+repositories {
+    //本地默认仓库
+    mavenLocal()
+    //阿里仓库
+    maven { url "https://maven.aliyun.com/repository/central" }
+    maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+}
+
+//配置插件
+configurations {
+    mybatisGenerator
+    developmentOnly
+    annotationProcessor
+    runtimeClasspath {
+        extendsFrom annotationProcessor
+    }
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    //排除依赖
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+//配置MyBatisGenerator插件
+mybatisGenerator {
+    verbose = true
+    configFile = 'src/main/resources/mybatis/generator/generatorConfig.xml'
+}
+
+// 依赖管理器
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$spring_boot_version"
+    }
+}
+
+// 依赖
+dependencies {
+    ///////////////////////////////////////////////////////////////////////////
+    // Libs
+    ///////////////////////////////////////////////////////////////////////////
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Test
+    ///////////////////////////////////////////////////////////////////////////
+    // Junit
+    testImplementation "junit:junit:4.12"
+    // Spring Test
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    // Lombok Test
+    testAnnotationProcessor "org.projectlombok:lombok:$lombok_version"
+    testCompileOnly "org.projectlombok:lombok:$lombok_version"
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Spring Boot
+    ///////////////////////////////////////////////////////////////////////////
+    //Web
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        //Undertow
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+        implementation "org.springframework.boot:spring-boot-starter-undertow"
+    }
+    // JPA
+//    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    // MongoDB
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+    // Redis
+    implementation "org.springframework.boot:spring-boot-starter-data-redis:+"
+    // Quartz
+    implementation "org.springframework.boot:spring-boot-starter-quartz"
+    // Log4j2
+    implementation "org.springframework.boot:spring-boot-starter-log4j2"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9"
+    implementation "com.lmax:disruptor:3.4.2"
+    // Configuration Processor
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // Devtools
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Tools
+    ///////////////////////////////////////////////////////////////////////////
+    // FTP
+    implementation "commons-net:commons-net:3.6"
+    // JSch
+    implementation 'com.jcraft:jsch:0.1.55'
+    // XStream
+    implementation 'com.thoughtworks.xstream:xstream:1.4.11.1'
+    annotationProcessor 'com.thoughtworks.xstream:xstream:1.4.11.1'
+    // Dozer
+    implementation 'com.github.dozermapper:dozer-spring-boot-starter:6.5.0'
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // Lombok
+    compileOnly "org.projectlombok:lombok:$lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$lombok_version"
+    // MyBatis
+    implementation "tk.mybatis:mapper-spring-boot-starter:$mybatis_mapper_spring_version"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatis_spring_version"
+    // SQLite
+    implementation "org.xerial:sqlite-jdbc:$sqlite_version"
+    // MyBatisGenerator插件依赖
+    mybatisGenerator "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatis_spring_version"
+    mybatisGenerator "org.mybatis.generator:mybatis-generator-core:+"
+    mybatisGenerator "tk.mybatis:mapper:$mybatis_mapper_version"
+    mybatisGenerator fileTree(dir: 'libs', include: ['ojdbc6.jar'])
+
+}
+
+// 清理打包生成的Jar包
+task clearJar(type: Delete) {
+    delete 'build/libs/'
+}
+
+// 将GradleCaches下载到的依赖导出至本地默认仓库中(默认仓库路径: C:/Users/user/.m2)
+task cacheToLocalMavenRepository(type: Copy) {
+    from new File(gradle.gradleUserHomeDir, 'caches/modules-2/files-2.1')
+    into repositories.mavenLocal().url
+    eachFile {
+        List<String> parts = it.path.split('/')
+        it.path = (parts[0] + '/' + parts[1]).replace('.', '/') + '/' + parts[2] + '/' + parts[4]
+    }
+    includeEmptyDirs false
+}
+
+
+
+
+

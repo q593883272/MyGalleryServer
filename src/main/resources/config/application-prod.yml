@@ -1,0 +1,31 @@
+################################ 生产环境 ################################
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # 驱动类
+    driver-class-name: oracle.jdbc.OracleDriver
+    # 连接字符串
+    url: jdbc:oracle:thin:@65.37.200.105:1521:orcl
+    # 用户名
+    username: SFGL
+    # 密码
+    password: hncssfgl#*2019
+    hikari:
+      pool-name: Hikari-Pool
+
+
+# MyBatis配置
+mybatis:
+  # 设置映射类型(ResultMap)下所在的包名
+  type-aliases-package: com.cswc.cssfgl.ftp.upload.ftp.po.dto.*
+  # 设置映射文件所在的资源路径
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+
+
+# Log日志设置
+logging:
+  # 设置日志配置文件
+  config: classpath:log/log4j2.yml
